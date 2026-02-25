@@ -7,10 +7,14 @@ class Solution {
         }
         for(char ch:ransomNote.toCharArray())
         {
-            if(count[ch-'a']==0){
+            count[ch-'a']--;
+        }
+        for(int n:count)
+        {
+            if(n<0)
+            {
                 return false;
             }
-            count[ch-'a']--;
         }
         return true;
     }
