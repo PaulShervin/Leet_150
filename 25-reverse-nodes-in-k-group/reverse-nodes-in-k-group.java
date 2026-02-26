@@ -1,32 +1,46 @@
 class Solution {
-
     public ListNode reverseKGroup(ListNode head, int k) {
-        if (head==null||k==1) return head;
-        ListNode ans=new ListNode(0);
-        ans.next=head;
-        ListNode prev_blk=ans;
-        ListNode prev_ptr=head;
-        while (true){
-            ListNode nxt_ptr=prev_blk;
-            int ind=0;
-            while (ind<k&&nxt_ptr!=null) {
-                nxt_ptr=nxt_ptr.next;
-                ind++;
+
+        if (head == null || k <= 1) return head;
+
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+
+        ListNode groupPrev = dummy;
+
+        while (true) {
+
+            // 1️⃣ Find kth node
+            ListNode kth = getKthNode(groupPrev, k);
+            if (kth == null) break;
+
+            ListNode groupNext = kth.next;
+
+            // 2️⃣ Reverse group
+            ListNode prev = groupNext;
+            ListNode curr = groupPrev.next;
+
+            while (curr != groupNext) {
+                ListNode temp = curr.next;
+                curr.next = prev;
+                prev = curr;
+                curr = temp;
             }
-            if (nxt_ptr==null) break;
-            ListNode nxt_blk=nxt_ptr.next;
-            ListNode prev=nxt_blk;
-            ListNode curr=prev_ptr;
-            while (curr!=nxt_blk) {
-                ListNode temp=curr.next;
-                curr.next=prev;
-                prev=curr;
-                curr=temp;
-            }
-            prev_blk.next=nxt_ptr;
-            prev_blk=prev_ptr;
-            prev_ptr=nxt_blk;
+
+            // 3️⃣ Reconnect
+            ListNode temp = groupPrev.next; // old start becomes end
+            groupPrev.next = kth;
+            groupPrev = temp;
         }
-        return ans.next;
+
+        return dummy.next;
+    }
+
+    private ListNode getKthNode(ListNode curr, int k) {
+        while (curr != null && k > 0) {
+            curr = curr.next;
+            k--;
+        }
+        return curr;
     }
 }
