@@ -4,8 +4,7 @@ class Solution {
         {
             return intervals;
         }
-
-        Arrays.sort(intervals,(a,b)->   a[0]-b[0]);
+        Arrays.sort(intervals,(a,b)-> a[0]-b[0]);
 
         List<int[]> answer=new ArrayList<>();
         int[] present_val=intervals[0];
@@ -13,9 +12,7 @@ class Solution {
         for(int itr=0;itr<intervals.length;itr++)
         {
             int[] next_val=intervals[itr];
-
-
-            if(next_val[0]<=present_val[1])
+            if(present_val[1]>=next_val[0])
             {
                 present_val[1]=Math.max(present_val[1],next_val[1]);
             }
